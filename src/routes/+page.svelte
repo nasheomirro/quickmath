@@ -1,5 +1,7 @@
 <script lang="ts">
+	import Game from "$lib/game/Game.svelte";
+	import Settings from "$lib/game/Settings.svelte";
 </script>
 
-<div>
-</div>
+<Settings />
+<Game />

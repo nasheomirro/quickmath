@@ -1,6 +1,9 @@
-export type Settings = {
+export type SettingsType = {
 	operations: Array<'+' | '-' | '*' | '/'>;
-	speed: 'easy' | 'blitz' | 'bullet';
+	speed: 'classic' | 'blitz' | 'bullet';
 };
 
-export type Question = [string, number];
+export type Challenge = {
+  question: string;
+  answer: number;
+}
