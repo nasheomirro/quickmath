@@ -1,18 +1,32 @@
 import { browser } from '$app/environment';
-import type { SettingsType } from '$lib/types';
+import type { SettingsType, SpeedCategory } from '$lib/types';
 import { writable } from 'svelte/store';
 
-export const speedMap: { [K in SettingsType['speed']]: number } = {
+export const SPEEDMAP: { [K in SpeedCategory]: number } = {
 	classic: 6500,
 	blitz: 4500,
 	bullet: 2500
 };
 
-export const settings = writable<SettingsType>({
-	operations: ['+', '-', '*'],
-	speed: 'blitz'
-});
+const STORAGE_KEY = 'settings';
 
-if (browser) {
-	// load from local storage
-}
+const createSettingStore = () => {
+	let initial: SettingsType = {
+		operations: ['+', '-', '*'],
+		speed: 'blitz'
+	};
+
+	if (browser) {
+		let saved = localStorage.getItem(STORAGE_KEY);
+		initial = saved ? JSON.parse(saved) : initial;
+	}
+
+	const store = writable<SettingsType>(initial);
+	store.subscribe((value) => {
+		localStorage.setItem(STORAGE_KEY, JSON.stringify(value));
+	});
+
+	return store;
+};
+
+export const settings = createSettingStore();

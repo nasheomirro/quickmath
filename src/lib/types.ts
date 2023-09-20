@@ -1,9 +1,11 @@
+export type SpeedCategory = 'classic' | 'blitz' | 'bullet';
+
 export type SettingsType = {
 	operations: Array<'+' | '-' | '*' | '/'>;
-	speed: 'classic' | 'blitz' | 'bullet';
+	speed: SpeedCategory;
 };
 
 export type Challenge = {
-  question: string;
-  answer: number;
-}
+	question: string;
+	answer: number;
+};

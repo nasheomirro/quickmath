@@ -3,22 +3,23 @@
 	import { tick } from 'svelte';
 	import Input from './Input.svelte';
 	import { generateChallenge } from './generator';
-	import { settings, speedMap } from './settings';
+	import { settings, SPEEDMAP } from './settings';
+	import { highscore } from './highscore';
 
 	let score = 0;
 	let state: 'idle' | 'ongoing' | 'finished' = 'idle';
 	let challenge: Challenge;
 
-  $: console.log($settings.speed);
-
 	let guess: string;
 	let timerId: NodeJS.Timeout;
 
 	let input: Input;
+	let newHighscore: boolean = false;
 
 	function newGame() {
 		state = 'ongoing';
 		score = 0;
+		newHighscore = false;
 		nextChallenge();
 		tick().then(() => input.focus());
 	}
@@ -29,7 +30,7 @@
 		clearTimeout(timerId);
 		timerId = setTimeout(() => {
 			state = 'finished';
-		}, speedMap[$settings.speed]);
+		}, SPEEDMAP[$settings.speed]);
 	}
 
 	function submitAnswer() {
@@ -38,6 +39,7 @@
 			nextChallenge();
 		} else {
 			state = 'finished';
+			newHighscore = highscore.reviewScore($settings.speed, score);
 		}
 	}
 </script>
@@ -53,6 +55,9 @@
 
 {#if state === 'finished'}
 	<h1>Score: {score}</h1>
+	{#if newHighscore}
+		<span>new high score!</span>
+	{/if}
 	<p>the correct answer was {challenge.answer}</p>
 	<button on:click={newGame}>play again</button>
 {/if}

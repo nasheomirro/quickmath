@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { SettingsType } from '$lib/types';
+	import type { SettingsType, SpeedCategory } from '$lib/types';
 	import type { ChangeEventHandler } from 'svelte/elements';
 	import { settings } from './settings';
 
@@ -20,7 +20,7 @@
 	};
 
 	const handleSpeed: ChangeEventHandler<HTMLInputElement> = (e) => {
-		$settings.speed = e.currentTarget.value as SettingsType['speed'];
+		$settings.speed = e.currentTarget.value as SpeedCategory;
 	};
 </script>
 
