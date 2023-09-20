@@ -1,22 +1,26 @@
 <script lang="ts">
 	import type { Challenge } from '$lib/types';
+	import { tick } from 'svelte';
 	import Input from './Input.svelte';
 	import { generateChallenge } from './generator';
-	import { settings } from './settings';
+	import { settings, speedMap } from './settings';
 
 	let score = 0;
 	let state: 'idle' | 'ongoing' | 'finished' = 'idle';
 	let challenge: Challenge;
 
+  $: console.log($settings.speed);
+
 	let guess: string;
 	let timerId: NodeJS.Timeout;
 
-	$: console.log($settings.operations);
+	let input: Input;
 
 	function newGame() {
 		state = 'ongoing';
 		score = 0;
 		nextChallenge();
+		tick().then(() => input.focus());
 	}
 
 	function nextChallenge() {
@@ -25,11 +29,10 @@
 		clearTimeout(timerId);
 		timerId = setTimeout(() => {
 			state = 'finished';
-		}, 5000);
+		}, speedMap[$settings.speed]);
 	}
 
 	function submitAnswer() {
-		console.log(guess, challenge.answer);
 		if (parseFloat(guess) === challenge.answer) {
 			score++;
 			nextChallenge();
@@ -44,7 +47,7 @@
 {:else}
 	<div>
 		<h1>{challenge.question}</h1>
-		<Input disabled={state !== 'ongoing'} bind:guess on:enter={submitAnswer} />
+		<Input bind:this={input} disabled={state !== 'ongoing'} bind:guess on:enter={submitAnswer} />
 	</div>
 {/if}
 

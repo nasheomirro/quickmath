@@ -18,28 +18,40 @@ export const generateChallenge = (settings: SettingsType, score: number): Challe
 			return { question, answer };
 		}
 		case '*': {
-      let whole = Math.floor(9 + score * 0.5);
-      // the whole gets cut into two pieces
-      // 1 < piece < whole
-      const firstHalf = Math.floor(Math.random() * (whole - 3)) + 2;
-      const secondHalf = whole - firstHalf;
-      
-      
-      let question = `${firstHalf} * ${secondHalf}`;
-      let answer = Math.round(eval(question) as number);
-      
-      console.log(whole, question, answer);
-      
-      return { question, answer };
+			let whole = 9 + Math.floor(score * 0.5);
+			// the whole gets cut into two pieces
+			const firstHalf = Math.floor(Math.random() * (whole - 3)) + 2;
+			const secondHalf = whole - firstHalf;
+
+			let question = `${firstHalf} * ${secondHalf}`;
+			let answer = Math.round(eval(question) as number);
+
+			console.log(whole, question, answer);
+
+			return { question, answer };
 		}
 		case '/': {
-			// TODO: make division fun somehow
-			let upperMax = 6 + score * 0.3;
-			let lowerMax = 6 + score * 0.2;
+			const multiplier = Math.floor(Math.random() * 2) % 2 === 0 ? 2 : 3;
+			const max = 3 + Math.floor(score * 0.5);
+			const min = 4 + Math.floor(score * 0.75);
 
-			let n1 = Math.floor(Math.random() * upperMax) + 2;
-			let n2 = Math.floor(Math.random() * lowerMax) + 2;
-			let question = `${n1} ${randomOperation} ${n2}`;
+			const n1 = (Math.floor(Math.random() * max) + min) * multiplier;
+			let n2: number;
+
+			// get a random factor of n1 that isn't 1 or itself
+			const factors = [];
+			for (let i = 2; i < n1; i++) {
+				if (n1 % i === 0) factors.push(i);
+			}
+
+			if (factors.length) {
+				n2 = factors[Math.floor(Math.random() * factors.length)];
+			} else {
+				// if for some reason we don't have a factor make it itself
+				n2 = n1;
+			}
+
+			let question = `${n1} / ${n2}`;
 			let answer = Math.round(eval(question) as number);
 
 			return { question, answer };
