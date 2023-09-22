@@ -3,8 +3,8 @@
 	import { tick } from 'svelte';
 	import Input from './Input.svelte';
 	import { generateChallenge } from './generator';
-	import { settings, SPEEDMAP } from './settings';
 	import { highscore } from './highscore';
+	import { SPEEDMAP, settings } from '$lib/settings/settings';
 
 	let score = 0;
 	let state: 'idle' | 'ongoing' | 'finished' = 'idle';
@@ -44,20 +44,29 @@
 	}
 </script>
 
-{#if state === 'idle'}
-	<button on:click={newGame}>start</button>
-{:else}
-	<div>
-		<h1>{challenge.question}</h1>
-		<Input bind:this={input} disabled={state !== 'ongoing'} bind:guess on:enter={submitAnswer} />
-	</div>
-{/if}
+<div class="pt-24 pb-4 flex flex-col items-center">
+	{#if state === 'idle'}
+		<button
+			class="py-2 px-10 bg-primary-600 border hover:brightness-105 border-surface-300 text-xl shadow font-bold rounded-lg"
+			on:click={newGame}>start</button
+		>
+	{:else}
+		<div class="flex flex-col">
+			<span class="text-center mb-2 text-surface-700">score: {score}</span>
+			<span class="text-4xl md:text-6xl mb-8 md:mb-12 font-bold text-center"
+				>{challenge.question}</span
+			>
+			<Input bind:this={input} disabled={state !== 'ongoing'} bind:guess on:enter={submitAnswer} />
+		</div>
+	{/if}
+</div>
 
 {#if state === 'finished'}
-	<h1>Score: {score}</h1>
-	{#if newHighscore}
-		<span>new high score!</span>
-	{/if}
-	<p>the correct answer was {challenge.answer}</p>
-	<button on:click={newGame}>play again</button>
+	<div class="flex flex-col gap-6 items-center">
+		<p class="text-center text-surface-500">the correct answer was {challenge.answer}</p>
+		<button
+			class="py-2 px-10 bg-primary-600 border hover:brightness-105 border-surface-300 text-xl shadow font-bold rounded-lg"
+			on:click={newGame}>play again</button
+		>
+	</div>
 {/if}

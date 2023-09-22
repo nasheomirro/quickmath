@@ -21,10 +21,16 @@ const createSettingStore = () => {
 		initial = saved ? JSON.parse(saved) : initial;
 	}
 
-	const store = writable<SettingsType>(initial);
-	store.subscribe((value) => {
-		localStorage.setItem(STORAGE_KEY, JSON.stringify(value));
+	const store = writable<SettingsType>({
+		operations: ['+', '-', '*'],
+		speed: 'blitz'
 	});
+
+	if (browser) {
+		store.subscribe((value) => {
+			localStorage.setItem(STORAGE_KEY, JSON.stringify(value));
+		});
+	}
 
 	return store;
 };

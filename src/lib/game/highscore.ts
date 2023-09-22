@@ -22,7 +22,9 @@ const createHighScoreStore = () => {
 
 	const store = writable<HighScoreStore>(initial);
 	store.subscribe((value) => {
-		localStorage.setItem(HIGHSCORE_KEY, JSON.stringify(value));
+    if (browser) {
+      localStorage.setItem(HIGHSCORE_KEY, JSON.stringify(value));
+    }
 	});
 
 	const reviewScore = (type: SpeedCategory, score: number) => {
