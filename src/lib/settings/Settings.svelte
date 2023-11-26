@@ -48,13 +48,16 @@
 	</button>
 	<form
 		class={join(
-			showMenu ? 'hidden' : 'flex',
+			showMenu ? 'flex' : 'hidden',
 			'md:flex flex-col md:flex-row md:py-10 md:px-0 md:shadow-none md:border-none md:bg-[transparent] bg-surface-50  shadow border border-surface-300 rounded-lg gap-3 justify-between p-5',
 			'absolute top-full left-0 w-full md:static'
 		)}
 	>
 		<div>
-			<span class="block mb-1 text-primary-700 font-semibold">operations</span>
+			<span
+				class="block mb-1
+			 text-primary-700 font-semibold">operations</span
+			>
 			<div class="flex gap-3">
 				<Checkbox
 					name="addition"

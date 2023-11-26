@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { join } from '$lib/utils';
-
 	export let name: string;
 	export let checked: boolean;
 </script>
@@ -13,7 +11,8 @@
 
 <style lang="postcss">
 	.label {
-		@apply overflow-hidden cursor-pointer border-surface-500 shadow transition-colors inline-flex p-2 border rounded-md border-opacity-40;
+		@apply overflow-hidden cursor-pointer border-surface-500 shadow transition-colors 
+		inline-flex p-2 border rounded-md border-opacity-40;
 	}
 
 	.label.checked {
